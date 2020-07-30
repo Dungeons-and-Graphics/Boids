@@ -14,7 +14,7 @@ typedef struct s_vector2
 typedef struct	s_boids
 {
 	Vector2 position;
-	Vector2 direction;
+	double	direction;
 }				Boid;
 
 typedef struct s_list
@@ -22,12 +22,16 @@ typedef struct s_list
 	Boid *boid;
 	Node *next;
 	Node *head;
+	Node *tail;
 }				Node;
 
 typedef struct s_master
 {
-	Node *Grid;
+	int cell_no;
+	Node **Grid;
+
 	SDL_Renderer *renderer;
+	SDL_Window *window;
 }				Master;
 
 #endif

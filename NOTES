@@ -7,3 +7,9 @@ I have written out the structs though it is still unclear whether I should use a
 I think a regular list willl suffice. This shouldn't take long to finish, my primary goal is to make it in 3D.
 
 --------------------------------------------------------------------------------------------
+Didn't do much today. Waiting on new whiteboards to arrive.
+Have yet to test what I wrote. I realized that the best way to split the scene into a grid (for collisions) is to have cells = # of boids / 2
+I don't think I will take user input just yet.
+As of now boids spawn in random locations and are assigned t thei corresping cell (the one at their origin and the ones t which they collision radius extends)
+
+--------------------------------------------------------------------------------------------
