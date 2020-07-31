@@ -19,3 +19,33 @@ void	get_all_cells(Boid *boid, int *cell)
 	cell[6] = get_cell(boid, -1, 1);
 	cell[7] = get_cell(boid, 1, -1);
 }
+double get_distance(Boid a, Boid b)
+{
+	int x, y;
+	double dist;
+
+	x = a.position.x - b.position.x;
+	y = a.position.y - b.position.y;
+	dist = (x * x) + (y * y);
+	return sqrt(dist);
+}
+
+Vector2 add_vectors(Vector2 a, Vector2 b)
+{
+
+}
+
+void move_away(Boid *boid, Boid target)
+{
+
+}
+
+void move_closer(Boid *boid, Boid target)
+{
+
+}
+
+void follow(Boid *boid, Boid target)
+{
+
+}

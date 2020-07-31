@@ -8,6 +8,7 @@ void init_boids(Master *master)
 	while (i < 10)
 	{
 		boid = malloc(sizeof(Boid));
+		master->boids[i] = boid;
 		boid->position.x = rand() % WIN_W;
 		boid->position.y = rand() % WIN_H;
 
@@ -40,6 +41,7 @@ Master *init()
 	master.window = SDL_CreateWindow("Boids 2D", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_W, WIN_H, 0);
 	master.renderer = SDL_CreateRenderer(master.window, -1, render_flags);
 	master.Grid = malloc(sizeof(Node *) * 50); /* replace 50 by no boids / 2 */
+	master.boids = malloc(sizeof(Boid *) * 10);
 	while (i < 50)
 	{
 		master.Grid[i]->boid = NULL;

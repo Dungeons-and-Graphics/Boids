@@ -29,6 +29,7 @@ typedef struct s_master
 {
 	int cell_no;
 	Node **Grid;
+	Boid **boids;
 
 	SDL_Renderer *renderer;
 	SDL_Window *window;

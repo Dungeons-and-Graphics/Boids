@@ -13,3 +13,13 @@ I don't think I will take user input just yet.
 As of now boids spawn in random locations and are assigned t thei corresping cell (the one at their origin and the ones t which they collision radius extends)
 
 --------------------------------------------------------------------------------------------
+
+<rant> Have yet to test anything again but the VM is geting slow (again). I'm only limited by its speed >>> Can you believe it took me 30 seconds to write "int i = 0" </rant>
+Made some utils function, have yet to code most of them but the math is done. Wondering what the best way to switch cells would be... Currently I'm freeing every cell and filling it again
+but optimally I would like to remove a boid if it doesn't belong, and add it to its new cell.... the problem is this ends with multiple copies of the same boid in one cell...
+I could check if the boid already exists within the cell but given enough boids that's not a good solution.
+
+Tomorrow I will be able to make the first test though I expect I will have to do some SDL magic to be able to use SDL without having all of its one million and one .h files in my incl/
+The test should just have boids movinf at random (on that, note that I still need to add wall bounce or at the very least teleportation >>>>)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
