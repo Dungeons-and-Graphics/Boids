@@ -2,55 +2,65 @@
 
 void init_boids(Master *master)
 {
-	int i = 0, n,  origin_cell, rad_cell[8];
+	int i = 0, n, origin_cell, *surrounding, cell_elems, cur_cell;
 	Boid *boid;
 
+	surrounding = malloc(sizeof(int) * 8);
 	while (i < 10)
 	{
 		boid = malloc(sizeof(Boid));
-		master->boids[i] = boid;
 		boid->position.x = rand() % WIN_W;
 		boid->position.y = rand() % WIN_H;
+		boid->direction = rand() % 360;
+		master->boids[i] = boid;
 
-		origin_cell = get_cell(boid, 0, 0);
-		get_all_cells(boid, &rad_cell);
-		master->Grid[origin_cell]->tail->next = boid;
-		master->Grid[origin_cell]->tail = boid;
+		origin_cell = get_cell(*boid, 0 , 0);
+		master->grid[origin_cell].boid[master->grid[origin_cell].num_elems] = boid;
+		master->grid[origin_cell].num_elems++;
+
+		get_all_cells(*boid, surrounding);
 
 		n = 0;
 		while (n < 8)
 		{
-			if (rad_cell[n] != origin_cell)
+			if (surrounding[n] != origin_cell && surrounding[n] >= 0  && surrounding[n] < 50)
 			{
-				master->Grid[rad_cell[n]]->tail->next = boid;
-				master->Grid[rad_cell[n]]->tail = boid;
+				cur_cell = surrounding[n];
+				cell_elems = master->grid[0].num_elems;
+				master->grid[cur_cell].boid[cell_elems] = boid;
+			//	printf("End %d %d\n", rad_cell[n], n);
+				master->grid[cur_cell].num_elems++;
 			}
 			n++;
 		}
 		i++;
 	}
+	//free(surrounding);
 }
 
 Master *init()
 {
-	Master master;
+	Master *master;
 	int i = 0;
+
 	if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
 		printf("error %s\n", SDL_GetError());
 	Uint32 render_flags = SDL_RENDERER_SOFTWARE;
-	master.window = SDL_CreateWindow("Boids 2D", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_W, WIN_H, 0);
-	master.renderer = SDL_CreateRenderer(master.window, -1, render_flags);
-	master.Grid = malloc(sizeof(Node *) * 50); /* replace 50 by no boids / 2 */
-	master.boids = malloc(sizeof(Boid *) * 10);
+
+	if (!(master = (Master *)malloc(sizeof(Master))))
+		printf("mlloc failed\n");
+	master->window = SDL_CreateWindow("Boids 2D", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_W, WIN_H, 0);
+	master->renderer = SDL_CreateRenderer(master->window, -1, render_flags);
+
+	master->grid = malloc(sizeof(List) * 50);
+	master->boids = malloc(sizeof(Boid *) * 10);
+
 	while (i < 50)
 	{
-		master.Grid[i]->boid = NULL;
-		master.Grid[i]->head = master.Grid[i];
-		master.Grid[i]->next = NULL;
-		master.Grid[i]->tail = master.Grid[i];
+		master->grid[i].boid = malloc(sizeof(Boid *)  * 11);
+		master->grid[i].num_elems = 0;
 		i++;
 	}
-	init_boids(&master);
-	return &master;
+	init_boids(master);
+	return master;
 }
-

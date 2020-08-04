@@ -1,5 +1,5 @@
 NAME= Boid2D
-FLAGS= -Wall -Wextra -Werror
+FLAGS= -g -Wall -Wextra -Werror
 
 FILES= main init utils update_boids
 INCL = -I incl/
@@ -11,11 +11,11 @@ OBJS= $(addprefix objs/, $(addsuffix .o, $(FILES)))
 all: $(NAME)
 
 objs/%.o: srcs/%.c
-	@/bin/mkdir -p objects
-	gcc $(FLAGS) -c $(INCL) $< -o $@
+	@/bin/mkdir -p objs
+	gcc -g -c $(INCL) $< -o $@
 
 $(NAME): $(OBJS)
-	gcc $(FLAGS) $(INCL) $(SLIB) $(OBJS) -o $(NAME)
+	gcc -g $(INCL) $(SLIB) $(OBJS) -o $(NAME)
 
 clean:
 	rm -f $(OBJS)

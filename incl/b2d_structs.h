@@ -19,16 +19,13 @@ typedef struct	s_boids
 
 typedef struct s_list
 {
-	Boid *boid;
-	Node *next;
-	Node *head;
-	Node *tail;
-}				Node;
+	Boid **boid;
+	int num_elems;
+}				List;
 
 typedef struct s_master
 {
-	int cell_no;
-	Node **Grid;
+	List *grid;
 	Boid **boids;
 
 	SDL_Renderer *renderer;
