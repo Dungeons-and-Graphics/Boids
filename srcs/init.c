@@ -12,10 +12,13 @@ void init_boids(Master *master)
 		boid->position.x = rand() % WIN_W;
 		boid->position.y = rand() % WIN_H;
 		boid->direction = rand() % 360;
+		if (rand() % 2 == 1)
+			boid->direction *= -1;
+
 		master->boids[i] = boid;
 
-		origin_cell = get_cell(*boid, 0 , 0);
-		master->grid[origin_cell].boid[master->grid[origin_cell].num_elems] = boid;
+		//origin_cell = get_cell(*boid, 0 , 0);
+		/* master->grid[origin_cell].boid[master->grid[origin_cell].num_elems] = boid;
 		master->grid[origin_cell].num_elems++;
 
 		get_all_cells(*boid, surrounding);
@@ -32,7 +35,7 @@ void init_boids(Master *master)
 				master->grid[cur_cell].num_elems++;
 			}
 			n++;
-		}
+		} */
 		i++;
 	}
 	//free(surrounding);

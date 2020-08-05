@@ -7,15 +7,17 @@ void render(Master *master)
 
 	rect.h = WIN_H / 100;
 	rect.w = WIN_W / 100;
-	while (i < 10)
+	SDL_SetRenderDrawColor(master->renderer, 0, 255, 0, 255);
+	while (i < 2)
 	{
-		rect.x = master->boids[i]->position.x;
-		rect.y = master->boids[i]->position.y;
+		rect.x = (int)master->boids[i]->position.x;
+		rect.y = (int)master->boids[i]->position.y;
 		SDL_RenderDrawRect(master->renderer, &rect);
 		i++;
 	}
+	SDL_SetRenderDrawColor(master->renderer, 0, 0, 0, 255);
 }
-void cell_interactions(Master *master)
+/* void cell_interactions(Master *master)
 {
 	Boid **cell, *current;
 //	double distance;
@@ -30,7 +32,7 @@ void cell_interactions(Master *master)
 		while (elems > 0)
 		{
 			printf("%d\t", elems);
-			/* n = 0;
+			n = 0;
 			current = cell[*elems];
 			 while (n < *elems)
 			{
@@ -39,27 +41,58 @@ void cell_interactions(Master *master)
 				(rand() % 1 == 1) ? (current->direction *= -1) : (1 + 1);
 				n++;
 			}
-			printf("HERE\n");*/
+			printf("HERE\n");
 			elems--;
 		}
-		/*i++;
+		i++;
 		 if (distance <= AWAY_R)
 			move_away(boid, *cell->boid);
 		else if (distance <= CLOSE_R)
 			move_closer(boid, *cell->boid);
 		else if (distance <= FOLLOW_R)
-			follow(boid, *cell->boid); */
+			follow(boid, *cell->boid);
 		i++;
 	}
 }
-
+ */
 void apply_transforms(Boid *boid)
 {
-	boid->position.x += (cos(boid->direction) + 1);
-	boid->position.y += (sin(boid->direction) + 1);
+	double dir_x, dir_y;
+
+	dir_x = boid->position.x + cos(boid->direction);
+	dir_y = boid->position.y + sin(boid->direction);
+
+
+
+	if (dir_x >= (WIN_W - 10))
+	{
+		boid->position.x = WIN_W - 10;
+		boid->direction += 180;
+	}
+	else if (dir_x <= 0)
+	{
+		boid->position.x = 0;
+		boid->direction -= 180;
+	}
+	else
+		boid->position.x = dir_x;
+	if (dir_y >= (WIN_H - 10))
+	{
+		boid->position.y = WIN_H - 10;
+		boid->direction -= 180;
+	}
+	else if (dir_y <= 0)
+	{
+		boid->position.y = 0;
+		boid->direction += 180;
+	}
+	else
+		boid->position.y = dir_y;
+	//boid->position.y += (sin(boid->direction));
+	printf("Dir %f, %f)\n", boid->direction, boid->position.x);
 }
 
-void switch_cell(Master *master)
+/* void switch_cell(Master *master)
 {
 	int i = 0, cell, *rad_cell, *elems;
 	Boid *boid;
@@ -112,18 +145,38 @@ void switch_cell(Master *master)
 		i++;
 	}
 //	free(rad_cell);
-}
+} */
 
 void update(Master *master, int m_x, int m_y)
 {
 	(void)m_x;
 	(void)m_y;
+	int i = 0;
+	static int timer;
 
-	cell_interactions(master);
-	printf("Cell interactions\n");
-	exit(0);
-	switch_cell(master);
-	printf("Switch\n");
+	//cell_interactions(master);
+//	printf("Cell interactions\n");
+	//switch_cell(master);
+	//printf("Switch\n");
+	while (i < 2)
+	{
+		printf("\n\nBoid no %d\n", i);
+		if (timer >= 100)
+		{
+			master->boids[i]->direction = (rand() % 360);
+			timer = 0;
+		}
+		if (master->boids[i]->direction < 0)
+			master->boids[i]->direction = 0;
+		if (master->boids[i]->direction > 360)
+			master->boids[i]->direction = 360;
+		apply_transforms(master->boids[i]);
+		/*  if (rand() % 2 == 1)
+			dir *= -1; */
+		/* if (master->boids[i]->direction < 0 || master->boids[i]->direction > 360)
+			master->boids[i]->direction = 90; */
+		i++;
+	}
+	timer++;
 	render(master);
-	printf("Render\n");
 }

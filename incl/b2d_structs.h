@@ -8,7 +8,7 @@ typedef struct s_list Node;
 
 typedef struct s_vector2
 {
-	int x, y;
+	double x, y;
 }				Vector2;
 
 typedef struct	s_boids

@@ -26,7 +26,7 @@ fclean: clean
 push: clean
 	git add .
 	git commit -m "$(MSG)"
-	git push
+	git push origin master
 
 re: fclean all
 

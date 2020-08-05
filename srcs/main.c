@@ -22,6 +22,8 @@ int main()
 			}
 		}
 		update(master, mouse_x, mouse_y);
+		SDL_RenderPresent(master->renderer);
+		SDL_RenderClear(master->renderer);
 	}
 }
 

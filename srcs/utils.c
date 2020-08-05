@@ -1,6 +1,6 @@
 #include "b2d.h"
 
-int	get_cell(Boid boid, int offset_x, int offset_y)
+/* int	get_cell(Boid boid, int offset_x, int offset_y)
 {
 	int cell, celly, w, h;
 
@@ -23,7 +23,7 @@ void	get_all_cells(Boid boid, int *result)
 	*result = get_cell(boid, -100, -100);
 	*result = get_cell(boid, -100, 100);
 	*result = get_cell(boid, 100, -100);
-}
+} */
 
 double get_distance(Boid a, Boid b)
 {
