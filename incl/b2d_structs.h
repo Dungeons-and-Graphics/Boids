@@ -11,8 +11,16 @@ typedef struct s_vector2
 	double x, y;
 }				Vector2;
 
+typedef struct s_vars
+{
+	int div_close, div_mid, div_far;
+	int close, mid, far;
+	int newdir;
+}				Influence;
+
 typedef struct	s_boids
 {
+	Influence vars;
 	Vector2 position;
 	double	direction;
 }				Boid;

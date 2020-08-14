@@ -2,43 +2,43 @@
 
 void init_boids(Master *master)
 {
-	int i = 0, n, origin_cell, *surrounding, cell_elems, cur_cell;
+	int i = 0, n, *cell, cell_elems;
 	Boid *boid;
 
-	surrounding = malloc(sizeof(int) * 8);
+	cell = malloc(sizeof(int) * 9);
 	while (i < 10)
 	{
 		boid = malloc(sizeof(Boid));
 		boid->position.x = rand() % WIN_W;
 		boid->position.y = rand() % WIN_H;
 		boid->direction = rand() % 360;
-		if (rand() % 2 == 1)
-			boid->direction *= -1;
+		boid->vars.close = 0;
+		boid->vars.div_close = 0;
+		boid->vars.far = 0;
+		boid->vars.div_far = 0;
+		boid->vars.mid = 0;
+		boid->vars.div_mid = 0;
+
+		get_all_cells(*boid, cell);
 
 		master->boids[i] = boid;
+		master->grid[cell[0]].boid[master->grid[cell[0]].num_elems] = boid;
+		master->grid[cell[0]].num_elems++;
 
-		//origin_cell = get_cell(*boid, 0 , 0);
-		/* master->grid[origin_cell].boid[master->grid[origin_cell].num_elems] = boid;
-		master->grid[origin_cell].num_elems++;
-
-		get_all_cells(*boid, surrounding);
-
-		n = 0;
-		while (n < 8)
+		n = 1;
+		while (n < 9)
 		{
-			if (surrounding[n] != origin_cell && surrounding[n] >= 0  && surrounding[n] < 50)
+			if (cell[n] != cell[0] && cell[n] >= 0  && cell[n] < 50)
 			{
-				cur_cell = surrounding[n];
-				cell_elems = master->grid[0].num_elems;
-				master->grid[cur_cell].boid[cell_elems] = boid;
-			//	printf("End %d %d\n", rad_cell[n], n);
-				master->grid[cur_cell].num_elems++;
+				cell_elems = master->grid[cell[n]].num_elems;
+				master->grid[cell[n]].boid[cell_elems] = boid;
+				master->grid[cell[n]].num_elems++;
 			}
 			n++;
-		} */
+		}
 		i++;
 	}
-	//free(surrounding);
+	//free(cell);
 }
 
 Master *init()
@@ -46,12 +46,10 @@ Master *init()
 	Master *master;
 	int i = 0;
 
-	if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
-		printf("error %s\n", SDL_GetError());
+	SDL_Init(SDL_INIT_EVERYTHING);
 	Uint32 render_flags = SDL_RENDERER_SOFTWARE;
 
-	if (!(master = (Master *)malloc(sizeof(Master))))
-		printf("mlloc failed\n");
+	master = (Master *)malloc(sizeof(Master));
 	master->window = SDL_CreateWindow("Boids 2D", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_W, WIN_H, 0);
 	master->renderer = SDL_CreateRenderer(master->window, -1, render_flags);
 

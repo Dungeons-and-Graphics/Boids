@@ -21,7 +21,7 @@ int main()
 					SDL_GetMouseState(&mouse_x, &mouse_y);
 			}
 		}
-		update(master, mouse_x, mouse_y);
+		update_simple(master);
 		SDL_RenderPresent(master->renderer);
 		SDL_RenderClear(master->renderer);
 	}

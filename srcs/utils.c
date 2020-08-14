@@ -1,31 +1,62 @@
 #include "b2d.h"
 
-/* int	get_cell(Boid boid, int offset_x, int offset_y)
+double to_rad(double angle)
 {
-	int cell, celly, w, h;
+	double result;
+
+	result = angle * M_PI;
+	result /= 180;
+
+	return result;
+}
+
+double to_deg(double angle)
+{
+	double result;
+
+	result = angle * 180;
+	result /= M_PI;
+
+	return result;
+}
+
+int convert_angle(int result)
+{
+	if (result >= 0)
+		return result;
+	result *= - 1;
+
+	return (180 + result);
+}
+
+int	get_cell(Boid boid, int offset_x, int offset_y)
+{
+	int cell, cellx, celly, w, h;
 
 	w = CELL_W;
 	h = CELL_H;
-	cell = (boid.position.x + offset_x) / 100;
+	cellx = (boid.position.x + offset_x) / 100;
 	celly = (boid.position.y + offset_y) / 100;
-	cell += (celly * 10);
-	//printf("Cell %d\n", cell);
+	celly *= 10;
+	cell = cellx + celly;
+
 	return cell;
 }
 
 void	get_all_cells(Boid boid, int *result)
 {
-	*result = get_cell(boid, 0, 100);
-	*result = get_cell(boid, 0, -100);
-	*result = get_cell(boid, 100, 0);
-	*result = get_cell(boid, -100, 0);
-	*result = get_cell(boid, 100, 100);
-	*result = get_cell(boid, -100, -100);
-	*result = get_cell(boid, -100, 100);
-	*result = get_cell(boid, 100, -100);
-} */
+	result[0] = get_cell(boid, 0, 0);
+	result[1] = get_cell(boid, 0, 100);
+	result[2] = get_cell(boid, 0, -100);
+	result[3] = get_cell(boid, 100, 0);
+	result[4] = get_cell(boid, -100, 0);
+	result[5] = get_cell(boid, 100, 100);
+	result[6] = get_cell(boid, -100, -100);
+	result[7] = get_cell(boid, -100, 100);
+	result[8] = get_cell(boid, 100, -100);
+}
 
-double get_distance(Boid a, Boid b)
+int get_distance(Boid a, Boid b)
 {
 	int x, y;
 	double dist;
@@ -33,19 +64,59 @@ double get_distance(Boid a, Boid b)
 	x = a.position.x - b.position.x;
 	y = a.position.y - b.position.y;
 	dist = (x * x) + (y * y);
-	return sqrt(dist);
+	return abs((int)dist);
 }
 
-/* Vector2 add_vectors(Vector2 a, Vector2 b)
+
+void move_away(Boid *boid, Boid *target)
 {
+	int newdir, x, y ,i = 0, n;
 
+	x = target->position.x - boid->position.x;
+	y = target->position.y - boid->position.y;
+
+	newdir = convert_angle(to_deg(atan2(y, x)));
+	target->vars.div_close++;
+	target->direction = newdir;
+	target->vars.close += newdir;
+
+	newdir += 180;
+	if (newdir > 360)
+		newdir -= 360;
+	boid->vars.div_close++;
+	boid->direction = newdir;
+	boid->vars.close += newdir;
 }
 
-void move_away(Boid *boid, Boid target)
+void move_closer(Boid *boid, Boid *target)
 {
+	int newdir, x, y ,i = 0, n;
 
+	x = target->position.x - boid->position.x;
+	y = target->position.y - boid->position.y;
+
+
+	newdir = convert_angle(to_deg(atan2(y, x)));
+	target->vars.div_mid++;
+	target->vars.mid += newdir;
+
+	newdir += 180;
+	if (newdir > 360)
+		newdir -= 360;
+	boid->vars.div_mid++;
+	boid->vars.mid += newdir;
 }
 
+void follow(Boid *boid, Boid *target)
+{
+	boid->vars.div_far++;
+	boid->vars.far += target->direction;
+
+	target->vars.div_far++;
+	target->vars.far += boid->direction;
+}
+
+/*
 void move_closer(Boid *boid, Boid target)
 {
 
