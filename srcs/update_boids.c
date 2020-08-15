@@ -8,7 +8,7 @@ void render(Master *master)
 	rect.h = WIN_H / 100;
 	rect.w = WIN_W / 100;
 	SDL_SetRenderDrawColor(master->renderer, 0, 255, 0, 255);
-	while (i < 10)
+	while (i < BOIDNO)
 	{
 		rect.x = (int)master->boids[i]->position.x;
 		rect.y = (int)master->boids[i]->position.y;
@@ -25,17 +25,34 @@ void apply_transforms(Boid *boid, Master *master)
 	if (boid->vars.close > 0)
 	{
 		close = boid->vars.close;
-
 		close /= boid->vars.div_close;
-		while (close > 360)
-			close -= 360;
+		/* while (close > 360)
+			close -= 360; */
 		total += close;
 		t_div++;
 	}
-	/* if (t_div > 0)
-		boid->direction = close; */
+	if (boid->vars.mid > 0)
+	{
+		mid = boid->vars.mid;
 
-	printf("close %f, dir%f\n", close, boid->direction);
+		mid /= boid->vars.div_mid;
+		/* while (mid > 360)
+			mid -= 360; */
+		total += mid;
+		t_div++;
+	}
+	if (boid->vars.far > 0)
+	{
+		far = boid->vars.far;
+		far /= boid->vars.div_far;
+		/* while (far > 360)
+			far -= 360; */
+		total += far;
+		t_div++;
+	}
+	if (t_div > 0)
+		boid->direction = (total/t_div);
+
 	dir_x = boid->position.x + cos(to_rad(boid->direction));
 	dir_y = boid->position.y + sin(to_rad(boid->direction));
 	{
@@ -117,7 +134,7 @@ void update_simple(Master *master)
 	static int timer;
 	i = 0;
 
-	if (timer == 0)
+/* 	if (timer == 0)
 	{
 		master->boids[0]->direction = 0;
 		master->boids[0]->position.x = 450;
@@ -126,31 +143,26 @@ void update_simple(Master *master)
 		master->boids[1]->direction = 180;
 		master->boids[1]->position.x = 550;
 		master->boids[1]->position.y = 250;
-	}
-
-	while (i < 2)
+	} */
+	while (i < BOIDNO)
 	{
-		n = 1;
+		n = BOIDNO - 1;
 		while (n > i)
 		{
-			distance = get_distance(*master->boids[i], *master->boids[n]);
+			distance = get_distance(master->boids[i], master->boids[n]);
 			if (distance <= (CLOSE_R * CLOSE_R))
-			{
 				move_away(master->boids[i], master->boids[n]);
-				//printf("Dist %d, Old %f, new %d\n\n",distance, master->boids[i]->direction,master->boids[i]->vars.close);
-			}
-			/*else  if (distance <= AWAY_R * AWAY_R)
+			else if (distance <= AWAY_R * AWAY_R)
 				move_closer(master->boids[i], master->boids[n]);
 			else if (distance <= FOLLOW_R * FOLLOW_R)
-				follow(master->boids[i], master->boids[n]); */
+				follow(master->boids[i], master->boids[n]);
 			n--;
 		}
-		/* if (timer >= 100)
+		if (timer >= 100)
 		{
 			master->boids[i]->direction = (rand() % 360);
 			timer = 0;
-			//printf("Boid dir %d\n", master->boids[i]->vars.newdir);
-		} */
+		}
 		apply_transforms(master->boids[i], master);
 		i++;
 	}

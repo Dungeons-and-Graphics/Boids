@@ -26,3 +26,6 @@ The test should just have boids movinf at random (on that, note that I still nee
 Somehow boid->direction and boid-position.x / y can be modified and retain their value. Any variable in boid->vars however cannot be changed for some unknowreason and always goes back to 0...
 I need these values to change a sthey are the one I'm using to calculate the influence of the surrounding boid on the position of te of the current void.
 All movement functions work, but without these variables there is no way for me to  link them together;
+[--------]
+Fixed the above by doing absolutely nothing apart from restarting the VM.
+Everything works albeit in a sub optimal way. Might change it to the better faster way of checking collisons and might also make them follow the mouseS

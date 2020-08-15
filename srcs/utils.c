@@ -56,13 +56,13 @@ void	get_all_cells(Boid boid, int *result)
 	result[8] = get_cell(boid, 100, -100);
 }
 
-int get_distance(Boid a, Boid b)
+int get_distance(Boid *a, Boid *b)
 {
 	int x, y;
 	double dist;
 
-	x = a.position.x - b.position.x;
-	y = a.position.y - b.position.y;
+	x = a->position.x - b->position.x;
+	y = a->position.y - b->position.y;
 	dist = (x * x) + (y * y);
 	return abs((int)dist);
 }

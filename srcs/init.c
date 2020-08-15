@@ -5,9 +5,10 @@ void init_boids(Master *master)
 	int i = 0, n, *cell, cell_elems;
 	Boid *boid;
 
-	cell = malloc(sizeof(int) * 9);
-	while (i < 10)
+	//cell = malloc(sizeof(int) * 9);
+	while (i < BOIDNO)
 	{
+		printf("Start %d\n", i);
 		boid = malloc(sizeof(Boid));
 		boid->position.x = rand() % WIN_W;
 		boid->position.y = rand() % WIN_H;
@@ -18,10 +19,10 @@ void init_boids(Master *master)
 		boid->vars.div_far = 0;
 		boid->vars.mid = 0;
 		boid->vars.div_mid = 0;
-
-		get_all_cells(*boid, cell);
-
 		master->boids[i] = boid;
+
+	/* 	get_all_cells(*boid, cell);
+
 		master->grid[cell[0]].boid[master->grid[cell[0]].num_elems] = boid;
 		master->grid[cell[0]].num_elems++;
 
@@ -35,7 +36,7 @@ void init_boids(Master *master)
 				master->grid[cell[n]].num_elems++;
 			}
 			n++;
-		}
+		} */
 		i++;
 	}
 	//free(cell);
@@ -54,14 +55,14 @@ Master *init()
 	master->renderer = SDL_CreateRenderer(master->window, -1, render_flags);
 
 	master->grid = malloc(sizeof(List) * 50);
-	master->boids = malloc(sizeof(Boid *) * 10);
+	master->boids = malloc(sizeof(Boid *) * BOIDNO);
 
-	while (i < 50)
+	/* while (i < 50)
 	{
 		master->grid[i].boid = malloc(sizeof(Boid *)  * 11);
 		master->grid[i].num_elems = 0;
 		i++;
-	}
+	} */
 	init_boids(master);
 	return master;
 }

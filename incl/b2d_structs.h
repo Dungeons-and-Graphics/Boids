@@ -13,9 +13,9 @@ typedef struct s_vector2
 
 typedef struct s_vars
 {
-	int div_close, div_mid, div_far;
-	int close, mid, far;
-	int newdir;
+	double div_close, div_mid, div_far;
+	double close, mid, far;
+	double newdir;
 }				Influence;
 
 typedef struct	s_boids
