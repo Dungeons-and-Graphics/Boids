@@ -6,21 +6,15 @@
 
 # define WIN_W 1000
 # define WIN_H 500
-# define CELL_W WIN_W / 100
-# define CELL_H WIN_H / 100
-# define COLUMNS WIN_W / CE:
-# define ROWS
 # define AWAY_R 80
 # define CLOSE_R 20
 # define FOLLOW_R 60
-# define BOIDNO 100
+# define BOIDNO 50
 
 /*   File : init.c   */
 Master	*init();
 
 /*   File : utils.c   */
-int		get_cell(Boid boid, int offset_x, int offset_y);
-void	get_all_cells(Boid boid, int *result);
 void	move_away(Boid *boid, Boid *target);
 void	move_closer(Boid *boid, Boid *target);
 void	follow(Boid *boid, Boid *target);

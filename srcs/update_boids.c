@@ -26,8 +26,6 @@ void apply_transforms(Boid *boid, Master *master)
 	{
 		close = boid->vars.close;
 		close /= boid->vars.div_close;
-		/* while (close > 360)
-			close -= 360; */
 		total += close;
 		t_div++;
 	}
@@ -36,8 +34,6 @@ void apply_transforms(Boid *boid, Master *master)
 		mid = boid->vars.mid;
 
 		mid /= boid->vars.div_mid;
-		/* while (mid > 360)
-			mid -= 360; */
 		total += mid;
 		t_div++;
 	}
@@ -45,13 +41,11 @@ void apply_transforms(Boid *boid, Master *master)
 	{
 		far = boid->vars.far;
 		far /= boid->vars.div_far;
-		/* while (far > 360)
-			far -= 360; */
 		total += far;
 		t_div++;
 	}
 	if (t_div > 0)
-		boid->direction = (total/t_div);
+		boid->direction = (total + boid->direction)/(t_div + 1);
 
 	dir_x = boid->position.x + cos(to_rad(boid->direction));
 	dir_y = boid->position.y + sin(to_rad(boid->direction));
@@ -66,66 +60,23 @@ void apply_transforms(Boid *boid, Master *master)
 
 	boid->vars.close = 0;
 	boid->vars.div_close = 0;
+	boid->vars.mid = 0;
+	boid->vars.div_mid = 0;
+	boid->vars.far = 0;
+	boid->vars.div_far = 0;
 
 	if (dir_x >= (WIN_W - 10))
-	{
 		boid->position.x = 0;
-		//boid->direction += 180;
-	}
 	else if (dir_x <= 0)
-	{
 		boid->position.x = WIN_W - 10;
-		//boid->direction -= 180;
-	}
 	else
 		boid->position.x = dir_x;
 	if (dir_y >= (WIN_H - 10))
-	{
 		boid->position.y = 0;
-		//boid->direction -= 180;
-	}
 	else if (dir_y <= 0)
-	{
 		boid->position.y = WIN_H - 10;
-	//	boid->direction += 180;
-	}
 	else
 		boid->position.y = dir_y;
-}
-
-void update(Master *master, int m_x, int m_y)
-{
-	(void)m_x;
-	(void)m_y;
-	int i = 0, count, elems, dist, x, y;
-	static int timer;
-	List *cell;
-	Boid *boid, *target;
-
-	while (i < 50)
-	{
-		cell =  &master->grid[i];
-		elems = cell->num_elems  - 1;
-		while (elems >= 0)
-		{
-			boid = cell->boid[elems];
-			count = 0;
-			while (count < elems)
-			{
-				target = cell->boid[count];
-				x = target->position.x - boid->position.x;
-				y = target->position.y - boid->position.y;
-				dist = (x * x) + (y * y);
-				if  (CLOSE_R * CLOSE_R >= dist)
-				{
-					move_away(boid, target);
-				}
-				count++;
-			}
-			elems--;
-		}
-		i++;
-	}
 }
 
 void update_simple(Master *master)
@@ -134,16 +85,6 @@ void update_simple(Master *master)
 	static int timer;
 	i = 0;
 
-/* 	if (timer == 0)
-	{
-		master->boids[0]->direction = 0;
-		master->boids[0]->position.x = 450;
-		master->boids[0]->position.y = 250;
-
-		master->boids[1]->direction = 180;
-		master->boids[1]->position.x = 550;
-		master->boids[1]->position.y = 250;
-	} */
 	while (i < BOIDNO)
 	{
 		n = BOIDNO - 1;

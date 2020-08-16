@@ -29,33 +29,6 @@ int convert_angle(int result)
 	return (180 + result);
 }
 
-int	get_cell(Boid boid, int offset_x, int offset_y)
-{
-	int cell, cellx, celly, w, h;
-
-	w = CELL_W;
-	h = CELL_H;
-	cellx = (boid.position.x + offset_x) / 100;
-	celly = (boid.position.y + offset_y) / 100;
-	celly *= 10;
-	cell = cellx + celly;
-
-	return cell;
-}
-
-void	get_all_cells(Boid boid, int *result)
-{
-	result[0] = get_cell(boid, 0, 0);
-	result[1] = get_cell(boid, 0, 100);
-	result[2] = get_cell(boid, 0, -100);
-	result[3] = get_cell(boid, 100, 0);
-	result[4] = get_cell(boid, -100, 0);
-	result[5] = get_cell(boid, 100, 100);
-	result[6] = get_cell(boid, -100, -100);
-	result[7] = get_cell(boid, -100, 100);
-	result[8] = get_cell(boid, 100, -100);
-}
-
 int get_distance(Boid *a, Boid *b)
 {
 	int x, y;

@@ -17,9 +17,9 @@ Flocking simulation.
   - [ ] Avoid Obstacles
 
   - [ ] TUrn rules on and off
-  
-  - [ ] Refactor
-  
+
+  - [x] Refactor
+
   - [ ] Fix wall bounce
 
 ## NOTES
