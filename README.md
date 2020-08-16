@@ -1,6 +1,7 @@
 # Boids
 Flocking simulation.
-![alt text] (https://media.discordapp.net/attachments/432508907701665802/744535199336890408/unknown.png)
+
+![alt text](https://media.discordapp.net/attachments/432508907701665802/744535199336890408/unknown.png)
 
  - [x] Rule 1: Move away
 
